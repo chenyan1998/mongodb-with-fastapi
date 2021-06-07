@@ -8,15 +8,15 @@ from typing import List
 
 #Create User Route 
 app = APIRouter(
-    prefix="/employee",
-    tags=['Employee']
+    # prefix="/employee",
+    # tags=['Employee']
 )
 
 db = client.employee
 
 #Create employee route 
 #Employee list , to check who already take this 
-@app.post("/", response_description="Add new employee", response_model=EmployeeModel)
+@app.post("/employee", response_description="Add new employee", response_model=EmployeeModel,tags=['Employee'])
 async def create_employee(employee: EmployeeModel = Body(...)):
     employee = jsonable_encoder(employee)
     new_employee = await db["employees"].insert_one(employee)
@@ -25,7 +25,7 @@ async def create_employee(employee: EmployeeModel = Body(...)):
 
 
 @app.get(
-    "/", response_description="List all employees", response_model=List[EmployeeModel]
+    "/employee", response_description="List all employees", response_model=List[EmployeeModel],tags=['Employee']
 )
 async def list_employees():
     employees= await db["employees"].find().to_list(1000)
@@ -33,7 +33,7 @@ async def list_employees():
 
 
 @app.get(
-    "/{id}", response_description="Get a single employee", response_model=EmployeeModel
+    "/employee/{id}", response_description="Get a single employee", response_model=EmployeeModel,tags=['Employee']
 )
 async def show_employee(id: str):
     if (employee := await db["employees"].find_one({"_id": id})) is not None:
@@ -41,7 +41,7 @@ async def show_employee(id: str):
 
     raise HTTPException(status_code=404, detail=f"employee {id} not found")
 
-@app.put("/{id}", response_description="Update an employee", response_model=EmployeeModel)
+@app.put("/employee/{id}", response_description="Update an employee", response_model=EmployeeModel,tags=['Employee'])
 async def update_employee(id: str, employee: UpdateEmployeeModel = Body(...)):
     employee = {k: v for k, v in employee.dict().items() if v is not None}
 
@@ -59,7 +59,7 @@ async def update_employee(id: str, employee: UpdateEmployeeModel = Body(...)):
 
     raise HTTPException(status_code=404, detail=f"employee {id} not found")
 
-@app.delete("/{id}", response_description="Delete an employee")
+@app.delete("/employee/{id}", response_description="Delete an employee",tags=['Employee'])
 async def delete_employee(id: str):
     delete_result = await db["employees"].delete_one({"_id": id})
 

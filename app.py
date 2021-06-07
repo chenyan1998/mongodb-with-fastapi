@@ -20,7 +20,7 @@ and then we specify our database name college.
 # TODO 1 Put to database.py 
 # app = FastAPI()
 # client = motor.motor_asyncio.AsyncIOMotorClient(os.environ["MONGODB_URL"])
-# db = client.college
+#db = client.college
 app.include_router(user.app)
 
 

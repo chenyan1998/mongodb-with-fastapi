@@ -3,8 +3,8 @@ from fastapi import APIRouter
 
 #Create User Route 
 router = APIRouter(
-    prefix="/BackendStatus",
-    tags=['BackendStatus']
+    # prefix="/BackendStatus",
+    # tags=['BackendStatus']
 )
 
 @router.get("/BackendStatus" , tags=["BackendStatus"])

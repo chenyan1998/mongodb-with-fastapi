@@ -12,14 +12,14 @@ from typing import Optional, List
 
 #Create User Route 
 app = APIRouter(
-    prefix="/user",
-    tags=['Users']
+    # prefix="/user",
+    # tags=['Users']
 )
 
 db = client.user
 
 #Create student route 
-@app.post("/", response_description="Add new user", response_model=UserModel)
+@app.post("/user", response_description="Add new user", response_model=UserModel,tags=['Users'])
 async def create_user(user: UserModel = Body(...)):
     user = jsonable_encoder(user)
     new_user = await db["students"].insert_one(user)
@@ -28,7 +28,7 @@ async def create_user(user: UserModel = Body(...)):
 
 
 @app.get(
-    "/", response_description="List all user", response_model=List[UserModel]
+    "/user", response_description="List all user", response_model=List[UserModel],tags=['Users']
 )
 async def list_users():
     users = await db["students"].find().to_list(1000)
@@ -36,7 +36,7 @@ async def list_users():
 
 
 @app.get(
-    "/{id}", response_description="Get a single user", response_model=UserModel
+    "/user/{id}", response_description="Get a single user", response_model=UserModel,tags=['Users']
 )
 async def show_user(id: str):
     if (user := await db["students"].find_one({"_id": id})) is not None:
@@ -45,7 +45,7 @@ async def show_user(id: str):
     raise HTTPException(status_code=404, detail=f"user {id} not found")
 
 
-@app.put("/{id}", response_description="Update a user", response_model=UserModel)
+@app.put("/user/{id}", response_description="Update a user", response_model=UserModel,tags=['Users'])
 async def update_user(id: str, user: UpdateUserModel = Body(...)):
     user = {k: v for k, v in user.dict().items() if v is not None}
 
@@ -64,7 +64,7 @@ async def update_user(id: str, user: UpdateUserModel = Body(...)):
     raise HTTPException(status_code=404, detail=f"user {id} not found")
 
 
-@app.delete("/{id}", response_description="Delete a user")
+@app.delete("/user/{id}", response_description="Delete a user",tags=['Users'])
 async def delete_user(id: str):
     delete_result = await db["students"].delete_one({"_id": id})
 
