@@ -16,7 +16,7 @@ app = APIRouter(
     tags=['Users']
 )
 
-db = client.user
+db = client.college
 
 #Create student route 
 @app.post("/", response_description="Add new user", response_model=UserModel)
