@@ -7,7 +7,8 @@ from typing import Optional, List
 from database import client,app
 import motor.motor_asyncio
 import os
-from routers import user
+from routers import user,backendstatus,employee
 
-
+app.include_router(backendstatus.router)
+app.include_router(employee.app)
 app.include_router(user.app)
