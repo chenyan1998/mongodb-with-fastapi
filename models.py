@@ -85,3 +85,25 @@ class UpdateEmployeeModel(BaseModel):
                 "employee_risk_level":"3.0",
             }
         }
+
+class ReportModel(BaseModel):
+    id: PyObjectId = Field(default_factory=PyObjectId, alias="_id")
+    name: str = Field(...)
+    metric: str = Field(...)
+    filter_type: str = Field(...)
+    #report_format: float = Field(..., le=10.0)
+    report_format: str = Field(...)
+
+    class Config:
+        allow_population_by_field_name = True
+        arbitrary_types_allowed = True
+        json_encoders = {ObjectId: str}
+        schema_extra = {
+            "example": {
+                "name": "Jane Doe",
+                "metric": "dynamic metric",
+                "filter_type": "Age,Years,Departments",
+                "report_format":"Tables or charts ",
+            }
+        }
+
